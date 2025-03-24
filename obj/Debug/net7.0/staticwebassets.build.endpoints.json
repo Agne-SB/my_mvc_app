@@ -3,6 +3,88 @@
   "ManifestType": "Build",
   "Endpoints": [
     {
+      "Route": ".gitignore",
+      "AssetFile": ".gitignore",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "44"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/octet-stream"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"JYpHFCKG7SrxaaoeJocUcuFGCUXOlmzPKHBINyylu1A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 24 Mar 2025 21:04:12 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-JYpHFCKG7SrxaaoeJocUcuFGCUXOlmzPKHBINyylu1A="
+        }
+      ]
+    },
+    {
+      "Route": ".vrr1vp3mss.gitignore",
+      "AssetFile": ".gitignore",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "44"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/octet-stream"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"JYpHFCKG7SrxaaoeJocUcuFGCUXOlmzPKHBINyylu1A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 24 Mar 2025 21:04:12 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "vrr1vp3mss"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-JYpHFCKG7SrxaaoeJocUcuFGCUXOlmzPKHBINyylu1A="
+        },
+        {
+          "Name": "label",
+          "Value": ".gitignore"
+        }
+      ]
+    },
+    {
       "Route": "MyMvcApp.bwv5lkjv1g.styles.css",
       "AssetFile": "MyMvcApp.styles.css",
       "Selectors": [],

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Rhw1hsYyh19DLmgADlKDW1bzNY63RyXWpwsyNF33TYw=",
+  "Hash": "xeMKLxTYTP9i6tFUO+5seelHRCXJtVCBR2dLP2EGcYY=",
   "Source": "MyMvcApp",
   "BasePath": "_content/MyMvcApp",
   "Mode": "Default",
@@ -57,6 +57,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "/Users/agne/MyMvcApp/obj/Debug/net7.0/scopedcss/projectbundle/MyMvcApp.bundle.scp.css"
+    },
+    {
+      "Identity": "/Users/agne/MyMvcApp/wwwroot/.gitignore",
+      "SourceId": "MyMvcApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/agne/MyMvcApp/wwwroot/",
+      "BasePath": "_content/MyMvcApp",
+      "RelativePath": "#[.{fingerprint}]?.gitignore",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "vrr1vp3mss",
+      "Integrity": "JYpHFCKG7SrxaaoeJocUcuFGCUXOlmzPKHBINyylu1A=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/.gitignore"
     },
     {
       "Identity": "/Users/agne/MyMvcApp/wwwroot/css/site.css",
@@ -1404,6 +1425,88 @@
     }
   ],
   "Endpoints": [
+    {
+      "Route": ".gitignore",
+      "AssetFile": "/Users/agne/MyMvcApp/wwwroot/.gitignore",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "44"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/octet-stream"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"JYpHFCKG7SrxaaoeJocUcuFGCUXOlmzPKHBINyylu1A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 24 Mar 2025 21:04:12 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-JYpHFCKG7SrxaaoeJocUcuFGCUXOlmzPKHBINyylu1A="
+        }
+      ]
+    },
+    {
+      "Route": ".vrr1vp3mss.gitignore",
+      "AssetFile": "/Users/agne/MyMvcApp/wwwroot/.gitignore",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "44"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/octet-stream"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"JYpHFCKG7SrxaaoeJocUcuFGCUXOlmzPKHBINyylu1A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 24 Mar 2025 21:04:12 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "vrr1vp3mss"
+        },
+        {
+          "Name": "label",
+          "Value": ".gitignore"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-JYpHFCKG7SrxaaoeJocUcuFGCUXOlmzPKHBINyylu1A="
+        }
+      ]
+    },
     {
       "Route": "css/site.c9jqozd3rk.css",
       "AssetFile": "/Users/agne/MyMvcApp/wwwroot/css/site.css",

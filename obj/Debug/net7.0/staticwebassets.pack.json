@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets/MyMvcApp.bwv5lkjv1g.bundle.scp.css"
     },
     {
+      "Id": "/Users/agne/MyMvcApp/wwwroot/.gitignore",
+      "PackagePath": "staticwebassets/.gitignore"
+    },
+    {
       "Id": "/Users/agne/MyMvcApp/wwwroot/css/site.css",
       "PackagePath": "staticwebassets/css/site.css"
     },
