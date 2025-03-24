@@ -1,0 +1,41 @@
+@model List<MyMvcApp.Models.Bestilling>
+
+<h2>Levert til lager</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Ref.no</th>
+            <th>Selger</th>
+            <th>Varegruppe</th>
+            <th>Plassering på lager</th>
+            <th>Dato levert</th>
+            <th>Handling</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.RefNo</td>
+                <td>@item.Selger</td>
+                <td>@item.Varegruppe</td>
+                <td>
+                    <form asp-action="SetPlassering" asp-route-id="@item.Id" method="post" class="d-flex">
+                        <input name="plassering" value="@item.Plassering" class="form-control form-control-sm" placeholder="Plassering" />
+                        <button type="submit" class="btn btn-sm btn-outline-success ms-2">💾</button>
+                    </form>
+                </td>
+                <td>@item.DatoLevert?.ToString("dd-MM-yyyy")</td>
+                <td>
+                    <form asp-action="SetStatus" asp-route-id="@item.Id" asp-route-status="Montering" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-warning">Montering</button>
+                    </form>
+                    <form asp-action="SetStatus" asp-route-id="@item.Id" asp-route-status="Hentes" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-info">Hentes</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

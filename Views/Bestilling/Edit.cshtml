@@ -1,0 +1,33 @@
+@model MyMvcApp.Models.Bestilling
+
+<h2>Rediger vare</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div>
+        <label>Ref.no</label>
+        <input asp-for="RefNo" class="form-control" />
+    </div>
+    <div>
+        <label>Selger</label>
+        <input asp-for="Selger" class="form-control" />
+    </div>
+    <div>
+        <label>Varegruppe</label>
+        <input asp-for="Varegruppe" class="form-control" />
+    </div>
+    <div>
+        <label>Info om vare</label>
+        <input asp-for="InfoOmVare" class="form-control" />
+    </div>
+    <div>
+        <label for="SendesFraLager">Sendes fra lager</label>
+        <input type="date" id="SendesFraLager" name="SendesFraLager"
+            value="@(Model?.SendesFraLager.ToString("yyyy-MM-dd"))"
+            class="form-control" />
+    </div>
+
+
+    <button type="submit" class="btn btn-success" style="margin-top: 10px;">Lagre endringer</button>
+    <a href="/Bestilling" class="btn btn-secondary" style="margin-top: 10px;">Avbryt</a>
+</form>

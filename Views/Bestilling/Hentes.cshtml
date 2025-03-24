@@ -1,0 +1,60 @@
+@model List<MyMvcApp.Models.Bestilling>
+@{
+    ViewData["Title"] = "Hentes";
+}
+
+<h2>Hentes</h2>
+
+<table class="table table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th>Ref.no</th>
+            <th>Selger</th>
+            <th>Varegruppe</th>
+            <th>Plassering</th>
+            <th>Kunde informert?</th>
+            <th>Note</th>
+            <th>Handling</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var rowClass = item.KundeInformert ? "table-success" : "";
+            <tr class="@rowClass">
+
+                <td>@item.RefNo</td>
+                <td>@item.Selger</td>
+                <td>@item.Varegruppe</td>
+                <td>@item.Plassering</td>
+                <td>
+                    @if (!item.KundeInformert)
+                    {
+                        <form asp-action="SetInformert" asp-route-id="@item.Id" method="post" style="display:inline;">
+                            <input type="hidden" name="KundeInformert" value="true" />
+                            <button type="submit" class="btn btn-sm btn-outline-primary">Kunde kontaktet</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <span class="text-success fw-bold">Kontaktet</span>
+                    }
+                </td>
+                <td>
+                    <form asp-action="SetNote" asp-route-id="@item.Id" method="post" class="d-flex">
+                        <input type="text" name="note" value="@item.Note" class="form-control form-control-sm" />
+                        <button type="submit" class="btn btn-sm btn-outline-primary ms-2">💾</button>
+                    </form>
+                </td>
+                <td>
+                    <form asp-action="Hentet" asp-route-id="@item.Id" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-danger">Hentet</button>
+                    </form>
+                    <form asp-action="SetStatus" asp-route-id="@item.Id" asp-route-status="Retur" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-secondary">Retur</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

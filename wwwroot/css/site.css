@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+
+html {
+  font-size: 13px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+h1 {
+  font-size: 1.8rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+.table td,
+.table th {
+  font-size: 0.875rem; /* ~14px */
+}
+
+.btn {
+  font-size: 0.85rem;
+  padding: 4px 10px;
+}
+
+
+body {
+  margin-bottom: 60px;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f2f2f2;
+  color: #202426;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #f2f2f2;
+}
+
+.navbar-brand,
+.nav-link {
+  color: #6c733d !important;
+  font-weight: 500;
+}
+
+/* Table headers */
+.table thead th {
+  background-color: #202426;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Table rows */
+.table tbody tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+.table tbody tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+
+.btn-primary {
+  background-color: #6c733d;
+  border-color: #6c733d;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #55612f;
+  border-color: #55612f;
+}
+
+.btn-success {
+  background-color: #6c733d;
+  border-color: #6c733d;
+}
+
+.btn-success:hover {
+  background-color: #55612f;
+  border-color: #55612f;
+}
+
+.btn-warning {
+  background-color: #ff5f00;
+  border-color: #ff5f00;
+  color: white;
+}
+
+.btn-warning:hover {
+  background-color: #cc4b00;
+  border-color: #cc4b00;
+}
+
+.btn-danger {
+  background-color: #8c8c88;
+  border-color: #8c8c88;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #6c6c68;
+  border-color: #6c6c68;
+}
+
+.badge.bg-success {
+  background-color: #6c733d;
+}
+
+.badge.bg-danger {
+  background-color: #ff5f00;
+}
