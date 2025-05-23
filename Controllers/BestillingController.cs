@@ -66,9 +66,12 @@ namespace MyMvcApp.Controllers
             vare.SendesFraLager = DateTime.SpecifyKind(updated.SendesFraLager, DateTimeKind.Utc);
             vare.Status = updated.Status;
 
+            vare.Status = "Bestilling";
+
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+
 
         // DELETE
         public IActionResult Delete(int id)
@@ -102,7 +105,7 @@ namespace MyMvcApp.Controllers
             vare.Status = status;
 
             if (status == "Levert")
-            vare.DatoLevert = DateTime.UtcNow;
+                vare.DatoLevert = DateTime.UtcNow;
 
             _context.SaveChanges();
 
@@ -217,16 +220,16 @@ namespace MyMvcApp.Controllers
         public IActionResult Retur()
         {
             var varer = _context.Bestillinger
-                .Where(b => b.Status == "Retur")
+                .Where(b => b.Status == "Retur" && !b.Solgt && !b.KastetUt) // Hides marked items
                 .ToList();
 
-            // Basic stats
             ViewData["Total"] = varer.Count;
-            ViewData["Solgt"] = varer.Count(v => v.Solgt);
-            ViewData["Kastet"] = varer.Count(v => v.KastetUt);
+            ViewData["Solgt"] = _context.Bestillinger.Count(v => v.Status == "Retur" && v.Solgt);
+            ViewData["Kastet"] = _context.Bestillinger.Count(v => v.Status == "Retur" && v.KastetUt);
 
             return View(varer);
         }
+
 
         [HttpPost]
         public IActionResult SetGrunnAvRetur(int id, string grunn)
@@ -262,7 +265,7 @@ namespace MyMvcApp.Controllers
             _context.SaveChanges();
             return RedirectToAction("Retur");
         }
-
+        
 
     }
 }

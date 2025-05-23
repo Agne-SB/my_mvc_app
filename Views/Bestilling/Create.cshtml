@@ -8,13 +8,30 @@
         <label>Ref.no</label>
         <input asp-for="RefNo" class="form-control" />
     </div>
+
     <div>
-        <label>Selger</label>
-        <input asp-for="Selger" class="form-control" />
+    <label>Selger</label>
+        <select asp-for="Selger" class="form-control">
+            <option value="">Velg selger</option>
+            <option value="Agne">Agne</option>
+            <option value="Torbjørn">Torbjørn</option>
+            <option value="Jan Tore">Jan Tore</option>
+            <option value="Roger">Roger</option>
+            <option value="Kjartan">Kjartan</option>
+        </select>
     </div>
+
     <div>
         <label>Varegruppe</label>
-        <input asp-for="Varegruppe" class="form-control" />
+        <select asp-for="Varegruppe" class="form-control">
+            <option value="">Velg vare</option>
+            <option value="Glassprodukt">Glassprodukt</option>
+            <option value="Dør">Dør</option>
+            <option value="Vindu">Vindu</option>
+            <option value="Garasjeport">Garasjeport</option>
+            <option value="Profiler">Profiler</option>
+            <option value="Annet">Annet</option>
+        </select>
     </div>
     <div>
         <label>Info om vare</label>
