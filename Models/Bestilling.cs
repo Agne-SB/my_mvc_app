@@ -21,6 +21,7 @@ namespace MyMvcApp.Models
         public bool OutletLagtUt { get; set; }
         public bool Solgt { get; set; }
         public bool KastetUt { get; set; }
+        public string? Adresse { get; set; }
 
     }
 }

@@ -14,8 +14,8 @@
         <select asp-for="Selger" class="form-control">
             <option value="">Velg selger</option>
             <option value="Agne">Agne</option>
-            <option value="Torbjørn">Torbjørn</option>
-            <option value="Jan Tore">Jan Tore</option>
+            <option value="Torbjorn">Torbjørn</option>
+            <option value="Jantore">Jan Tore</option>
             <option value="Roger">Roger</option>
             <option value="Kjartan">Kjartan</option>
         </select>
@@ -42,6 +42,11 @@
         <input type="date" id="SendesFraLager" name="SendesFraLager"
             value="@(Model?.SendesFraLager.ToString("yyyy-MM-dd"))"
             class="form-control" />
+    </div>
+
+    <div>
+        <label>Adresse (for montering)</label>
+        <input asp-for="Adresse" class="form-control" />
     </div>
 
     <button type="submit" class="btn btn-success" style="margin-top: 10px;">Lagre</button>
