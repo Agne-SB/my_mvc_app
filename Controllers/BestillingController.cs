@@ -1,36 +1,37 @@
 using Microsoft.AspNetCore.Mvc;
 using MyMvcApp.Models;
 using MyMvcApp.Data;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MyMvcApp.Controllers
 {
     public class BestillingController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly HttpClient _httpClient;
 
         public BestillingController(AppDbContext context)
         {
             _context = context;
+            _httpClient = new HttpClient();
         }
 
-        // INDEX: Varer på bestilling (not Levert)
         public IActionResult Index()
         {
             var varer = _context.Bestillinger
                 .Where(b => b.Status == "Bestilling")
                 .ToList();
-
             return View(varer);
         }
 
-        // CREATE - GET
         public IActionResult Create()
         {
             return View();
         }
 
-        // CREATE - POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Bestilling nyBestilling)
@@ -43,7 +44,6 @@ namespace MyMvcApp.Controllers
             return RedirectToAction("Index");
         }
 
-        // EDIT - GET
         public IActionResult Edit(int id)
         {
             var vare = _context.Bestillinger.FirstOrDefault(b => b.Id == id);
@@ -51,7 +51,6 @@ namespace MyMvcApp.Controllers
             return View(vare);
         }
 
-        // EDIT - POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Bestilling updated)
@@ -64,16 +63,12 @@ namespace MyMvcApp.Controllers
             vare.Varegruppe = updated.Varegruppe;
             vare.InfoOmVare = updated.InfoOmVare;
             vare.SendesFraLager = DateTime.SpecifyKind(updated.SendesFraLager, DateTimeKind.Utc);
-            vare.Status = updated.Status;
-
-            vare.Status = "Bestilling";
+            vare.Status = "Bestilling"; // reset status
 
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
 
-
-        // DELETE
         public IActionResult Delete(int id)
         {
             var vare = _context.Bestillinger.FirstOrDefault(b => b.Id == id);
@@ -84,20 +79,16 @@ namespace MyMvcApp.Controllers
             return RedirectToAction("Index");
         }
 
-        // LEVERT - GET
         public IActionResult Levert()
         {
             var varer = _context.Bestillinger
                 .Where(b => b.Status == "Levert")
                 .ToList();
-
             return View(varer);
         }
 
-
-        // SET STATUS — Used for all status buttons
         [HttpPost]
-        public IActionResult SetStatus(int id, string status)
+        public async Task<IActionResult> SetStatus(int id, string status)
         {
             var vare = _context.Bestillinger.FirstOrDefault(b => b.Id == id);
             if (vare == null) return NotFound();
@@ -106,6 +97,34 @@ namespace MyMvcApp.Controllers
 
             if (status == "Levert")
                 vare.DatoLevert = DateTime.UtcNow;
+
+            if (status == "Montering")
+            {
+                vare.DatoMontering = DateTime.UtcNow;
+
+                // Send to MonteringService
+                var dto = new MonteringJobDto
+                {
+                    RefNo = vare.RefNo,
+                    Adresse = vare.Plassering ?? "Ukjent adresse",
+                    MonteringDato = vare.DatoMontering,
+                    Worker = "",
+                    Status = "Planlagt"
+                };
+
+                try
+                {
+                    var response = await _httpClient.PostAsJsonAsync(
+                        "https://montering-service.onrender.com/api/montering", dto);
+
+                    if (!response.IsSuccessStatusCode)
+                        Console.WriteLine("Failed to send to MonteringService: " + response.StatusCode);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error sending to MonteringService: " + ex.Message);
+                }
+            }
 
             _context.SaveChanges();
 
@@ -119,7 +138,6 @@ namespace MyMvcApp.Controllers
             };
         }
 
-        // SET PLASSERING
         [HttpPost]
         public IActionResult SetPlassering(int id, string plassering)
         {
@@ -128,21 +146,25 @@ namespace MyMvcApp.Controllers
 
             vare.Plassering = plassering;
             _context.SaveChanges();
-
             return RedirectToAction("Levert");
         }
 
-        // MONTERING - GET
         public IActionResult Montering()
         {
             var varer = _context.Bestillinger
                 .Where(b => b.Status == "Montering")
                 .ToList();
-
             return View(varer);
         }
 
-        // SET DATO FOR MONTERING
+        public IActionResult MonteringsOppdrag()
+        {
+            var varer = _context.Bestillinger
+                .Where(b => b.Status == "Montering")
+                .ToList();
+            return View(varer);
+        }
+
         [HttpPost]
         public IActionResult SetMonteringsdato(int id, DateTime dato)
         {
@@ -155,7 +177,6 @@ namespace MyMvcApp.Controllers
             return RedirectToAction("Montering");
         }
 
-        // START OPPDRAG
         [HttpPost]
         public IActionResult StartOppdrag(int id)
         {
@@ -168,17 +189,14 @@ namespace MyMvcApp.Controllers
             return RedirectToAction("Montering");
         }
 
-        // HENTES - GET
         public IActionResult Hentes()
         {
             var varer = _context.Bestillinger
                 .Where(b => b.Status == "Hentes")
                 .ToList();
-
             return View(varer);
         }
 
-        // SET "Kunde informert"
         [HttpPost]
         public IActionResult SetInformert(int id, bool KundeInformert)
         {
@@ -191,7 +209,6 @@ namespace MyMvcApp.Controllers
             return RedirectToAction("Hentes");
         }
 
-        // SET NOTE
         [HttpPost]
         public IActionResult SetNote(int id, string note)
         {
@@ -204,7 +221,6 @@ namespace MyMvcApp.Controllers
             return RedirectToAction("Hentes");
         }
 
-        // HENTET (Delete from DB)
         [HttpPost]
         public IActionResult Hentet(int id)
         {
@@ -220,7 +236,7 @@ namespace MyMvcApp.Controllers
         public IActionResult Retur()
         {
             var varer = _context.Bestillinger
-                .Where(b => b.Status == "Retur" && !b.Solgt && !b.KastetUt) // Hides marked items
+                .Where(b => b.Status == "Retur" && !b.Solgt && !b.KastetUt)
                 .ToList();
 
             ViewData["Total"] = varer.Count;
@@ -229,7 +245,6 @@ namespace MyMvcApp.Controllers
 
             return View(varer);
         }
-
 
         [HttpPost]
         public IActionResult SetGrunnAvRetur(int id, string grunn)
@@ -265,7 +280,5 @@ namespace MyMvcApp.Controllers
             _context.SaveChanges();
             return RedirectToAction("Retur");
         }
-        
-
     }
 }
