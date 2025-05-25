@@ -154,14 +154,6 @@ namespace MyMvcApp.Controllers
             return View(varer);
         }
 
-        public IActionResult MonteringsOppdrag()
-        {
-            var varer = _context.Bestillinger
-                .Where(b => b.Status == "Montering")
-                .ToList();
-            return View(varer);
-        }
-
         public IActionResult Levert()
         {
             var varer = _context.Bestillinger
