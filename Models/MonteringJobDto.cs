@@ -6,6 +6,5 @@ namespace MyMvcApp.Models
         public string Adresse { get; set; }
         public DateTime? MonteringDato { get; set; }
         public string Worker { get; set; }
-        public string Status { get; set; }
     }
 }

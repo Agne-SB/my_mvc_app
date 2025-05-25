@@ -6,6 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// STEP 4: Register HttpClient for dependency injection
+builder.Services.AddHttpClient(); // ✅ THIS IS THE LINE TO ADD
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -19,7 +22,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles(); //  Serve static files (e.g. CSS, JS, images)
+app.UseStaticFiles();
 
 app.UseRouting();
 
@@ -30,5 +33,3 @@ app.MapControllerRoute(
     pattern: "{controller=Bestilling}/{action=Index}/{id?}");
 
 app.Run();
-
-

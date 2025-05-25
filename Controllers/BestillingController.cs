@@ -63,28 +63,10 @@ namespace MyMvcApp.Controllers
             vare.Varegruppe = updated.Varegruppe;
             vare.InfoOmVare = updated.InfoOmVare;
             vare.SendesFraLager = DateTime.SpecifyKind(updated.SendesFraLager, DateTimeKind.Utc);
-            vare.Status = "Bestilling"; // reset status
+            vare.Status = "Bestilling";
 
             _context.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        public IActionResult Delete(int id)
-        {
-            var vare = _context.Bestillinger.FirstOrDefault(b => b.Id == id);
-            if (vare == null) return NotFound();
-
-            _context.Bestillinger.Remove(vare);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        public IActionResult Levert()
-        {
-            var varer = _context.Bestillinger
-                .Where(b => b.Status == "Levert")
-                .ToList();
-            return View(varer);
         }
 
         [HttpPost]
@@ -93,6 +75,7 @@ namespace MyMvcApp.Controllers
             var vare = _context.Bestillinger.FirstOrDefault(b => b.Id == id);
             if (vare == null) return NotFound();
 
+            var oldStatus = vare.Status;
             vare.Status = status;
 
             if (status == "Levert")
@@ -102,14 +85,12 @@ namespace MyMvcApp.Controllers
             {
                 vare.DatoMontering = DateTime.UtcNow;
 
-                // Send to MonteringService
-                var dto = new MonteringJobDto
+                var dto = new
                 {
                     RefNo = vare.RefNo,
                     Adresse = vare.Plassering ?? "Ukjent adresse",
                     MonteringDato = vare.DatoMontering,
-                    Worker = "",
-                    Status = "Planlagt"
+                    Worker = ""
                 };
 
                 try
@@ -118,11 +99,27 @@ namespace MyMvcApp.Controllers
                         "https://montering-service.onrender.com/api/montering", dto);
 
                     if (!response.IsSuccessStatusCode)
-                        Console.WriteLine("Failed to send to MonteringService: " + response.StatusCode);
+                        Console.WriteLine(" Failed to send to MonteringService: " + response.StatusCode);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine("Error sending to MonteringService: " + ex.Message);
+                }
+            }
+
+            if (oldStatus == "Montering" && status != "Montering")
+            {
+                try
+                {
+                    var response = await _httpClient.DeleteAsync(
+                        $"https://montering-service.onrender.com/api/montering/{vare.RefNo}");
+
+                    if (!response.IsSuccessStatusCode)
+                        Console.WriteLine(" Failed to delete from MonteringService: " + response.StatusCode);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(" Error deleting from MonteringService: " + ex.Message);
                 }
             }
 
@@ -164,6 +161,16 @@ namespace MyMvcApp.Controllers
                 .ToList();
             return View(varer);
         }
+
+        public IActionResult Levert()
+        {
+            var varer = _context.Bestillinger
+                .Where(b => b.Status == "Levert")
+                .ToList();
+
+            return View(varer);
+        }
+
 
         [HttpPost]
         public IActionResult SetMonteringsdato(int id, DateTime dato)
@@ -222,15 +229,26 @@ namespace MyMvcApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Hentet(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var vare = _context.Bestillinger.FirstOrDefault(b => b.Id == id);
             if (vare == null) return NotFound();
 
+            if (vare.Status == "Montering")
+            {
+                try
+                {
+                    await _httpClient.DeleteAsync($"https://montering-service.onrender.com/api/montering/{vare.RefNo}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error deleting from MonteringService: " + ex.Message);
+                }
+            }
+
             _context.Bestillinger.Remove(vare);
             _context.SaveChanges();
-
-            return RedirectToAction("Hentes");
+            return RedirectToAction("Index");
         }
 
         public IActionResult Retur()
@@ -280,5 +298,18 @@ namespace MyMvcApp.Controllers
             _context.SaveChanges();
             return RedirectToAction("Retur");
         }
+
+        [HttpPost]
+        public IActionResult SlettFraMontering(int id)
+        {
+            var vare = _context.Bestillinger.FirstOrDefault(b => b.Id == id);
+            if (vare == null) return NotFound();
+
+            _context.Bestillinger.Remove(vare);
+            _context.SaveChanges();
+
+            return RedirectToAction("Montering");
+        }
+
     }
 }
