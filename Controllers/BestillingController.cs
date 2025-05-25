@@ -88,7 +88,7 @@ namespace MyMvcApp.Controllers
                 var dto = new
                 {
                     RefNo = vare.RefNo,
-                    Adresse = vare.Plassering ?? "Ukjent adresse",
+                    Adresse = vare.Adresse ?? "Ukjent adresse",
                     MonteringDato = vare.DatoMontering,
                     Worker = ""
                 };
