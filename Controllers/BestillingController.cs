@@ -125,6 +125,9 @@ namespace MyMvcApp.Controllers
 
             _context.SaveChanges();
 
+            await NotifyAsync(vare);
+
+
             return status switch
             {
                 "Levert" => RedirectToAction("Levert"),
@@ -302,6 +305,38 @@ namespace MyMvcApp.Controllers
 
             return RedirectToAction("Montering");
         }
+
+
+        private async Task NotifyAsync(Bestilling b)
+        {
+            var dto = new NotificationDto
+            {
+                BestillingId = b.Id,
+                Status = b.Status,
+                Selger = b.Selger ?? "",
+                RefNo = b.RefNo ?? "",
+                Plassering = b.Plassering,
+                DatoLevert = b.DatoLevert,
+                Adresse = b.Adresse,
+                MonteringDato = b.DatoMontering,
+                GrunnAvRetur = b.GrunnAvRetur,
+                CustomText = b.Note
+            };
+
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync(
+                    "https://notification-service-vcz1.onrender.com/api/notification", dto);
+
+                if (!response.IsSuccessStatusCode)
+                    Console.WriteLine("Failed to send notification: " + response.StatusCode);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error sending notification: " + ex.Message);
+            }
+        }
+
 
     }
 }
