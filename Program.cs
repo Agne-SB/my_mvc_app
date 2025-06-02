@@ -9,7 +9,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 builder.Services.AddHttpClient("AuthApi", client =>
 {
-    client.BaseAddress = new Uri("https://authorisation-tv7m.onrender.co");
+    client.BaseAddress = new Uri("https://authorisation-tv7m.onrender.com");
 });
 
 builder.Services.AddDbContext<AppDbContext>(options =>
