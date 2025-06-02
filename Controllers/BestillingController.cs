@@ -5,9 +5,12 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace MyMvcApp.Controllers
 {
+    [Authorize]
     public class BestillingController : Controller
     {
         private readonly AppDbContext _context;

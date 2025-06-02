@@ -3,18 +3,31 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// --- Services registration (MUST come BEFORE builder.Build()) ---
 builder.Services.AddControllersWithViews();
 
-// STEP 4: Register HttpClient for dependency injection
-builder.Services.AddHttpClient(); // ✅ THIS IS THE LINE TO ADD
+builder.Services.AddHttpClient();
+builder.Services.AddHttpClient("AuthApi", client =>
+{
+    client.BaseAddress = new Uri("https://authorisation-tv7m.onrender.co");
+});
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddAuthentication("Cookies")
+    .AddCookie("Cookies", options =>
+    {
+        options.LoginPath = "/Account/Login";
+    });
+
+builder.Services.AddAuthorization();
+builder.Services.AddHttpContextAccessor();
+
+// --- Build the app ---
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// --- Middleware configuration ---
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -26,6 +39,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication(); // ✅ must be before UseAuthorization
 app.UseAuthorization();
 
 app.MapControllerRoute(
